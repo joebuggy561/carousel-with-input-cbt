@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carousel with Input</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+
+    .sliders{
+        margin: 150px auto;
+        height: 50vh;
+        width: 40%;
+        background-color: rgba(72, 50, 1, 1);
+        position: absolute;
+
+    }
+ 
+
+    .school-name{
+        padding: 20px;
+        text-align: center;
+    }
+
+    hr{
+        border: 2px solid lightgray;
+    }
+
+    .main-body{
+        display: flex;
+        justify-content: space-between;
+        padding: 0 40px;
+    }
+
+    .main-body-one{
+        width: 50%;
+    }
+
+    .main-body-two{
+        margin-top:  40px;
+        width: 50%;
+    }
+
+    
+
+    .neymar_img{
+        border-radius: 50%;
+        height: 60%;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .allslides{
+        padding: 0 30px;
+        position: relative;
+        margin: auto;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+
+
+    th{
+        padding: 10px;
+        font-size: 25px;
+        font-weight: 900;
+        text-align: center;
+    }
+
+    td{
+        padding: 10px;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .button-div{
+        width: 100%;
+        margin-top: 60px;
+        text-align: center;
+        gap: 30px;
+        position: absolute;
+        padding: 10px;
+    }
+
+    .prev{
+        padding: 20px;
+        font-size: 19px;
+        margin: 15px;
+    }
+
+    .next{
+        padding: 20px;
+        font-size: 19px;
+        margin: 15px; 
+        
+    }
+
+    .cbtExam{
+        width: 10%;
+        margin: 20px;
+        text-align: center;
+        gap: 30px;
+        position: absolute;
+        padding: 10px;
+    }
+
+    input{
+        padding: 0 50px;
+        margin-top: 50px;
+    }
+    
+ 
+</style>
+<body>
+    <main class="main-container">
+        <div class="allslides">
+            <div class="sliders" id="slider">
+                <div class="school-name"><h1>SQI Student Identity Card</h1>
+                </div>
+                <hr>
+                <div class="main-body" id="main">
+                    
+
+                    
+                
+                </div>
+                
+                <p id="newlyAdded"></p>
+                
+            </div>
+            <div id="myModal" class="modal" style="background-color: black;">
+
+                              
+                <span></span>
+               
+            </div>
+            
+          
+        </div>
+        <input type="file" name="radio" id='input' onchange="(event)">
+        <div>      
+            <button type="button" name="cbt" class="cbtExam" id="cbtExam" onclick="openPopUp()" ><strong>CBT</strong></button>
+            <div class='modal' id='modal'>
+                <div>
+                <h2>This Cbt should only take 30mins</h2>
+                </div>
+                <form id="form">
+                    <p id=form-prompt>How old are you?</p>
+                    <input type="radio" id="child" name="age" value="child">
+                    <label for="child">17 years or younger</label><br>
+                    <input type="radio" id="adult" name="age" value="adult">
+                    <label for="adult">18 - 64 years</label><br>
+                    <input type="radio" id="senior" name="age" value="senior">
+                    <label for="senior">65 years or older</label>
+                    
+                    <div><button type="submit">Submit</button></div>
+                </form>
+         
+            </div>
+        </div>
+      
+    </main> 
+    <div class="button-div">
+        <button class="prev" type="menu" id="previous" onclick="previous()">Previous</button>
+        <button class="next" type="menu" id="next" onclick="next()">Next</button>
+    </div>  
+    
+</body>
+<script>
+
+// enter each card into an array 
+
+let mainData =  [{
+    name: 'Name: James Bond',
+    program: 'Program: Javascript',
+    year: 'Year: Year 1',
+    sex: 'Sex: Male',
+    entry: 'Entry: 2024',
+    model: 'Model: Blue',
+    img: 'neymar.jpg'
+},
+    {name: 'Name: John Doe',
+    program: 'Program: MongoDb',
+    year: 'Year: Year 1',
+    sex: 'Sex: Male',
+    entry: 'Entry: 2024',
+    model: 'Model: Yellow',
+    img: 'messi.jpg'
+},
+    {name: 'Name: Michael Blacks',
+    program: 'Program: SQL',
+    year: 'Year: Year 1',
+    sex: 'Sex: Male',
+    entry: 'Entry: 2024',
+    model: 'Model: Brown',
+    img: 'ronaldo.jpg'
+},
+]
+
+
+
+// Event delegation for each element capture in the function displa() /div
+
+let name = document.getElementById('name');
+let program = document.getElementById('program');
+let sex = document.getElementById('sex');
+let entry = document.getElementById('entry');
+let model = document.getElementById('model');
+let year = document.getElementById('year');
+let img = document.getElementById('img');
+let newInput = document.getElementById('input')
+let dataAdded = document.getElementById('newlyAdded')
+let btn = document.getElementById('cbtExam')
+let modal = document.getElementById('modal')
+
+
+btn.onclick = function (){
+    modal.style.display = 'block'
+}
+
+
+// set first index to 0
+let index = 0;
+
+
+//call display function display the content of each value
+display()
+
+// write a conditional statement that once the event button is clicked it allows the display() to display the last value of the array
+function previous(){
+    if(index == 0){
+        index = mainData.length -1
+        display()
+    }else{
+        index --;
+        display()
+    }
+}
+
+// write a conditional statement that once the event button is clicked it allows the display() to add a display to the last value of the array
+function next(){
+    if(index === mainData.length - 1){
+        index = 0
+        display()
+    }else{
+        index ++;
+        display()
+    }
+}
+
+
+newInput.addEventListener('input', (e) => {
+    let file = e.target.files[0];
+    let fileURL = URL.createObjectURL(file);
+    
+    
+    // Prompting the user to input character information
+    let name = prompt("Enter student's name:", '');
+    let program = prompt("Enter student's program:", '');
+    let sex = prompt("Enter student's sex:", '');
+    let entry = prompt("Enter student's entry:", '');
+    let model = prompt("Enter student's model:", '');
+    let year = prompt("Enter student's year:", '');
+    
+
+    // collect all prompt into objects
+    let characterInfo = {
+        name: `NAME: ${name}`,
+        program: `PROGRAM: ${program}`,
+        sex: `SEX: ${sex}`,
+        model: `MODEL: ${model}`,
+        entry: `ENTRY: ${entry}`,
+        year: `YEAR: ${year}}`,
+        img: fileURL,
+       
+    };
+    
+    mainData.push(characterInfo);
+    index++;
+    
+    // Js magic ternary operator if dataAdded.textContent - if the value of the  index === 1 then print character else charaters
+    dataAdded.textContent = index === 1 ? `${index} character dataAdded` : `${index} characters dataAdded`;
+
+    // saveId()
+
+  
+});
+
+
+// function saveId(){
+//     // parase and get the existing data 
+//     let studentInfo = JSON.parse(localStorage.getItem('studentInfo') || []);
+
+//     // add the new data only
+//     studentInfo.push(...mainData.slice(studentInfo.length));
+
+//     // save the new data to local storage
+//     localStorage.setItem('studentInfo',JSON.stringify(studentInfo));
+// }
+
+
+
+
+// write a display() to display content of the array
+
+function display(){
+main.innerHTML =        `<div class="main-body-one">
+                                <img src="${mainData[index].img}" alt="#" class="neymar_img" id='img'>
+
+                        </div>
+
+                        <div class="main-body-two">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td id='name'>${mainData[index].name}</td>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td id='program'>${mainData[index].program}</td>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td id='program'>${mainData[index].program}</td>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td id='sex'>${mainData[index].sex}</td>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td id='entry'>${mainData[index].entry}</td>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td id='model'>${mainData[index].model}</td>
+                                    </tr>
+                                </tbody>
+                               
+
+                            </table>
+                           
+                        </div>`
+}
+
+
+// let popUp = document.getElementById('#popup');
+
+// function openPopUp(){
+//     popUp.classList.add('open-popup')
+// }
+
+// function closePopUp(){
+//     popUp.classList.remove('open-popup')
+// }
+
+
+</script>
+</html> 
